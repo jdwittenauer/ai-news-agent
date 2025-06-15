@@ -1,0 +1,16 @@
+Infrastructure:
+
+https://supabase.com/
+https://vercel.com/
+https://nextjs.org/
+https://fastapi.tiangolo.com/
+
+Libraries:
+
+https://huggingface.co/docs
+https://docs.vllm.ai/en/latest/
+https://python.langchain.com/docs/get_started/introduction
+
+Templates:
+
+https://vercel.com/templates/next.js/nextjs-fastapi-starter
