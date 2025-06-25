@@ -2,15 +2,19 @@ Infrastructure:
 
 https://supabase.com/
 https://vercel.com/
+https://ai.google.dev/gemini-api/
+https://cloud.google.com/generative-ai-app-builder/docs/ranking
+
+Web:
+
 https://nextjs.org/
 https://fastapi.tiangolo.com/
+https://tailwindcss.com/
 
-Libraries:
+AI:
 
 https://huggingface.co/docs
 https://docs.vllm.ai/en/latest/
-https://python.langchain.com/docs/get_started/introduction
-
-Templates:
-
-https://vercel.com/templates/next.js/nextjs-fastapi-starter
+https://python.langchain.com/
+https://ai.pydantic.dev/
+https://phoenix.arize.com/
