@@ -4,6 +4,7 @@ https://supabase.com/
 https://vercel.com/
 https://ai.google.dev/gemini-api/
 https://cloud.google.com/generative-ai-app-builder/docs/ranking
+https://www.llamaindex.ai/llamaparse
 
 Web:
 
