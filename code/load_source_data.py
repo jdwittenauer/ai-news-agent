@@ -10,11 +10,35 @@ def get_published_date(published_str):
     date_obj = datetime.strptime(published_str[:16], "%a, %d %b %Y")
     return str(date_obj.date())
 
-def load_recent_entries(feed, supabase, num_entries):
+def clear_table(supabase):
+    response = (
+        supabase.table("ai_news_raw_daily")
+        .delete()
+        .neq("id", 0)
+        .execute()
+    )
+    print(f"Deleted {len(response.data)} rows from the database.")
+
+def get_last_entry_date(supabase):
+    response = (
+        supabase.table("ai_news_raw_daily")
+        .select("published_date")
+        .order("published_date", desc=True)
+        .limit(1)
+        .execute()
+    )
+    if response.data:
+        return response.data[0]["published_date"]
+    else:
+        return None
+
+def load_recent_entries(feed, supabase, num_entries, last_entry_date):
     print(f"Reading entries from {feed.feed.title}...")
     i = 0
     for entry in feed.entries[:num_entries]:
         if entry.get("content", "None") != "None":
+            if last_entry_date and get_published_date(entry.published) <= last_entry_date:
+                continue
             _ = (
                 supabase.table("ai_news_raw_daily")
                 .insert([
@@ -32,14 +56,6 @@ def load_recent_entries(feed, supabase, num_entries):
             i += 1
     print(f"Loaded {i} rows to the database.")
 
-def clear_table(supabase):
-    response = (
-        supabase.table("ai_news_raw_daily")
-        .delete()
-        .neq("id", 0)
-        .execute()
-    )
-    print(f"Deleted {len(response.data)} rows from the database.")
 
 def main():
     load_dotenv()
@@ -54,7 +70,9 @@ def main():
     args = parser.parse_args()
     if args.clear:
         clear_table(supabase)
-    load_recent_entries(feed, supabase, args.num_entries)
+    last_entry_date = get_last_entry_date(supabase)
+    load_recent_entries(feed, supabase, args.num_entries, last_entry_date)
+    print()
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ Infrastructure:
 
 https://supabase.com/
 https://vercel.com/
+https://render.com/
 https://ai.google.dev/gemini-api/
 https://cloud.google.com/generative-ai-app-builder/docs/ranking
 https://www.llamaindex.ai/llamaparse
@@ -11,6 +12,7 @@ Web:
 https://nextjs.org/
 https://fastapi.tiangolo.com/
 https://tailwindcss.com/
+https://ui.shadcn.com/
 
 AI:
 
@@ -19,3 +21,9 @@ https://docs.vllm.ai/en/latest/
 https://python.langchain.com/
 https://ai.pydantic.dev/
 https://phoenix.arize.com/
+
+Guides:
+
+https://supabase.com/docs/guides/getting-started
+https://vercel.com/templates/authentication/supabase
+https://vercel.com/templates/next.js/nextjs-fastapi-starter
