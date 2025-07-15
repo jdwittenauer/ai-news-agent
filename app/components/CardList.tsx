@@ -32,7 +32,7 @@ export default function CardList({ items, selectedId, onSelect }: Props) {
               rel="noopener noreferrer"
               className="text-sm text-blue-600 hover:underline"
             >
-              View Source
+              {item.link}
             </a>
             <p className="text-xs text-muted-foreground mt-1">
               {new Date(item.published_date).toLocaleDateString()}
