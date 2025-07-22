@@ -4,8 +4,9 @@ https://supabase.com/
 https://vercel.com/
 https://render.com/
 https://ai.google.dev/gemini-api/
-https://cloud.google.com/generative-ai-app-builder/docs/ranking
+https://www.tavily.com/
 https://www.llamaindex.ai/llamaparse
+https://glama.ai/mcp/servers
 
 Web:
 
@@ -18,9 +19,9 @@ AI:
 
 https://huggingface.co/docs
 https://docs.vllm.ai/en/latest/
-https://python.langchain.com/
 https://ai.pydantic.dev/
 https://phoenix.arize.com/
+https://github.com/google-gemini/gemini-cli
 
 Guides:
 
