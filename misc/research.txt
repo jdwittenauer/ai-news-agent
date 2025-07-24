@@ -20,11 +20,5 @@ AI:
 https://huggingface.co/docs
 https://docs.vllm.ai/en/latest/
 https://ai.pydantic.dev/
-https://phoenix.arize.com/
+https://langfuse.com/
 https://github.com/google-gemini/gemini-cli
-
-Guides:
-
-https://supabase.com/docs/guides/getting-started
-https://vercel.com/templates/authentication/supabase
-https://vercel.com/templates/next.js/nextjs-fastapi-starter
