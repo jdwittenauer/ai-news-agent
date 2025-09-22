@@ -18,7 +18,7 @@ Create initial migration file:
 <pre>supabase db dump --local --file supabase/migrations/$(date +%Y%m%d%H%M%S)_init.sql</pre>
 
 Create schema diff migration file:
-<pre>supabase db diff --local --file supabase/migrations/$(date +%Y%m%d%H%M%S)_update.sql</pre>
+<pre>supabase db diff --local --file update</pre>
 
 Rebuild the database:
 <pre>supabase db reset</pre>

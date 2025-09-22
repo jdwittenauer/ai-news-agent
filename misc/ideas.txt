@@ -1,0 +1,3 @@
+Generate hierarchal summaries
+Use prompts to capture updates (have specific categories to look for)
+Use separate personas for summary extraction over the same text

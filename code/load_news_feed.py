@@ -39,20 +39,14 @@ def load_recent_entries(feed, supabase, num_entries, last_entry_date):
         if entry.get("content", "None") != "None":
             if last_entry_date and get_published_date(entry.published) <= last_entry_date:
                 continue
-            _ = (
-                supabase.table("ai_news_raw_daily")
-                .insert([
-                    {
-                        "created_at": str(datetime.now()),
-                        "title": entry.title,
-                        "link": entry.link,
-                        "published_date": get_published_date(entry.published),
-                        "summary": entry.summary,
-                        "content": entry.content[0]['value']
-                    }
-                ])
-                .execute()
-            )
+            supabase.table("ai_news_raw_daily").insert({
+                "created_at": str(datetime.now()),
+                "title": entry.title,
+                "link": entry.link,
+                "published_date": get_published_date(entry.published),
+                "summary": entry.summary,
+                "content": entry.content[0]['value']
+            }).execute()
             i += 1
     print(f"Loaded {i} rows to the database.")
 
@@ -72,7 +66,6 @@ def main():
         clear_table(supabase)
     last_entry_date = get_last_entry_date(supabase)
     load_recent_entries(feed, supabase, args.num_entries, last_entry_date)
-    print()
 
 
 if __name__ == "__main__":
