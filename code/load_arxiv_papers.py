@@ -3,10 +3,12 @@ import feedparser
 import json
 import os
 import re
+import time
 from datetime import datetime
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from google.genai.errors import ClientError
 from supabase import create_client
 
 
@@ -69,7 +71,22 @@ Output:"""
 
 def get_published_date(published_str):
     date_obj = datetime.strptime(published_str[:16], "%a, %d %b %Y")
-    return date_obj.date()
+    return str(date_obj.date())
+
+def generate_with_retry(client, **kwargs):
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(**kwargs)
+            return response
+        except ClientError as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
+            if attempt == max_retries - 1:
+                raise
+            print("Waiting before retrying...")
+            time.sleep(60)
+            print("Retrying...")
+    return None
 
 def get_abstracts(entries):
     abstracts_list = []
@@ -92,11 +109,12 @@ def clear_table(supabase):
     print(f"Deleted {len(response.data)} rows from the database.")
 
 def run_batch(client, supabase, entries):
-    results = []
-    response = client.models.generate_content(
+    count = 0
+    response = generate_with_retry(
+        client,
         model="gemini-2.0-flash-lite",
         config=types.GenerateContentConfig(
-            temperature=0.7
+            temperature=1.0
         ),
         contents=[INSTRUCTIONS.replace("{{article_data}}", get_abstracts(entries))]
     )
@@ -114,11 +132,12 @@ def run_batch(client, supabase, entries):
                 "abstract": entry.summary.strip().split("Abstract: ")[1],
                 "reason": r["reason"]
             }).execute()
-        return results, tokens
+            count += 1
+        return count, tokens
     except Exception as e:
         print(f"Batch error: {e}")
         print ("Skipping batch...")
-        return []
+        return 0, tokens
 
 def main():
     load_dotenv()
@@ -133,18 +152,19 @@ def main():
     args = parser.parse_args()
     if args.clear:
         clear_table(supabase)
-    all_results = []
+    total_count = 0
     total_tokens = 0
     batch_size = 20
     num_entries = len(feed.entries)
+    print(f"Processing {num_entries} entries in batches of {batch_size}...")
     for start in range(0, num_entries, batch_size):
         end = min(start + batch_size, num_entries)
         batch_entries = feed.entries[start:end]
         print(f"Running batch {int(start/batch_size)+1}...")
-        batch_results, batch_tokens = run_batch(client, supabase, batch_entries)
-        all_results.extend(batch_results)
+        batch_count, batch_tokens = run_batch(client, supabase, batch_entries)
+        total_count += batch_count
         total_tokens += batch_tokens
-    print(f"Saved {len(all_results)} papers using {num_entries//batch_size} calls and {total_tokens} tokens.")
+    print(f"Saved {total_count} papers using {num_entries//batch_size} calls and {total_tokens} tokens.")
 
 
 if __name__ == "__main__":
